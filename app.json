@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Authentication Flow",
-    "slug": "AuthFlow",
+    "name": "Machine App",
+    "slug": "Machinetimer",
     "privacy": "public",
     "sdkVersion": "39.0.0",
     "platforms": [

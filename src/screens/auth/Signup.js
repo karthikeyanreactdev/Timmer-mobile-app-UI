@@ -5,6 +5,8 @@ import axios from 'axios'
 import { 
     KeyboardAvoidingView, View, Button, Alert, Text, StyleSheet, TextInput,TouchableOpacity
 } from 'react-native';
+import { ListItem, Avatar,Card, Icon } from 'react-native-elements'
+
 import AsyncStorage from '@react-native-community/async-storage'
 import apiRoot from '../../../apiconfig'
 
@@ -56,10 +58,11 @@ export default class SigninScreen extends React.Component {
                     )
                 },
                 error => {
-                    console.log(error);
+                   // console.log(error);
+                  //  console.log(error.response.status);
                     Alert.alert(
                         "Account creation failed..",
-                       'Please try again' ,
+                    error.response.status===404?'Mobile number already exits':  'Please try again' ,
                         [
                           {
                             text: "OK",
@@ -75,10 +78,12 @@ export default class SigninScreen extends React.Component {
    
 
     render() {
+        const {firstName, lastName, mobileNumber}=this.state;
         return (
             <View style={{flexGrow: 1}} behavior="padding" enabled>
                 <View style={style.container}>
-                    
+                <Card.FeaturedSubtitle style={style.titleText}><Text>Sign in to your account</Text></Card.FeaturedSubtitle>        
+
                     <TextInput 
                         //secureTextEntry={true}
                         keyboardType="default"
@@ -97,7 +102,7 @@ export default class SigninScreen extends React.Component {
                     />
                     <TextInput 
                         keyboardType="number-pad"
-                        onChangeText={mobileNumber => this.setState({mobileNumber})}
+                        onChangeText={mobileNumber =>{this.setState({mobileNumber}); console.log(mobileNumber.length)}}
                         style={style.input}
                         placeholder="Mobile Number"
                         value={this.state.mobileNumber}
@@ -110,17 +115,17 @@ export default class SigninScreen extends React.Component {
                     } */}
                       <TouchableOpacity
                         style={style.loginBtn}
-
+disabled={firstName==='' || lastName==='' || mobileNumber.length!==10?true:false}
                         title="Sign Up"
                        onPress={this.signUpHandler}
-                    ><Text style={style.loginText}>SIGN UP</Text></TouchableOpacity>
+                    ><Text style={style.loginText}>Sign Up</Text></TouchableOpacity>
                     <TouchableOpacity
 
                         title="BACK"
                         onPress={() =>
                             this.props.navigation.navigate('Auth')
                         }
-                    ><Text style={style.signupText}>BACK TO LOGIN</Text>
+                    ><Text style={style.signupText}>Back to Login</Text>
 
                     </TouchableOpacity>
                 </View>
@@ -141,7 +146,7 @@ const style = StyleSheet.create({
     },
     loginBtn: {
         width: "75%",
-        backgroundColor: "#018e8f",
+        backgroundColor: "#612B8B",
         borderRadius: 10,
         height: 40,
         alignItems: "center",
@@ -152,6 +157,9 @@ const style = StyleSheet.create({
     inputText: {
         height: 50,
         color: "white"
+    },
+    titleText:{
+        color:'black',fontSize:22, marginTop:-15, marginBottom:30
     },
     input: {
         backgroundColor: '#DAE1F1',
@@ -170,6 +178,6 @@ const style = StyleSheet.create({
         color:"white"
       },
       signupText:{
-        color:"#018e8f"
+        color:"#612B8B"
       }
 });

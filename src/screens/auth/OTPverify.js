@@ -5,6 +5,8 @@ import {
     KeyboardAvoidingView, View, Button, Alert, Text, StyleSheet, TextInput, TouchableOpacity,Pressable
 } from 'react-native';
 import OtpTimer from 'otp-timer'
+import { ListItem, Avatar,Card, Icon } from 'react-native-elements'
+
 import AsyncStorage from '@react-native-community/async-storage'
 import apiRoot from '../../../apiconfig'
 
@@ -22,6 +24,7 @@ export default class OTPverify extends React.Component {
             spinner: false,
             error: false,
             otp:'',
+            role:props.navigation.state.params.role,
             otpfromProps:props.navigation.state.params.otp,
             mobilefromProps:props.navigation.state.params.mobile,
            
@@ -31,14 +34,14 @@ export default class OTPverify extends React.Component {
         //this._signInHandler = this._signInHandler.bind(this);
     }
 
-    signInHandler = async () => {
-       const { otp, otpfromProps, mobilefromProps } = this.state;
+    userSubmit = async () => {
+       const { otp, otpfromProps, mobilefromProps, role } = this.state;
        // AsyncStorage.setItem('userToken', mobileNumber);
        // AsyncStorage.setItem('userName', 'karthik');
 
        const params={
         mobilenumber:mobilefromProps,
-        otp:otpfromProps
+        otp:otp
     }
     console.log(params)
     axios.post(`${apiRoot.url}/verifyOTP`,params)
@@ -46,7 +49,7 @@ export default class OTPverify extends React.Component {
     .then(
         result => {
            console.log(result   )
-           if(result.message==="Success"){          
+           if(result.message==="Success"){         
            
             AsyncStorage.setItem('userToken', result.token);
             AsyncStorage.setItem('mobilenumber', result.data[0].mobile);
@@ -85,51 +88,63 @@ export default class OTPverify extends React.Component {
         }
     );
 
-
-
-
-
-        
-        
-        // alert('Local :'+AsyncStorage.getItem('userToken'))
-        // this.props.navigation.navigate(userToken1 ==='2' ? 'App2' : 'App');
-       // this.props.navigation.navigate(userToken1 === '2' ? 'App2' : userToken1 === '1' ? 'App' : 'Auth');
-
-        //this.props.navigation.navigate('App2');
-        //         var formData = new FormData();
-        //         formData.append('email', email);
-        //         formData.append('password', password);
-
-        //         this.setState({spinner: true});
-
-        //         const response = await fetch(`https://c282a758.ngrok.io/api/login`, {
-        //     method: 'POST', 
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/x-www-form-urlencoded'
-        //     }, 
-        //     body: formData
-        // })
-        //         .then(resp => {
-        //             this.setState({spinner: false});
-        //             return resp.json();
-        //         })
-        //         .catch(error => {
-        //             this.setState({spinner: false});
-        //             throw error;
-        //         });
-
-        //         console.log(response);
-
-        //         if (typeof response.message != "undefined") {
-        //             await Alert.alert('Error', response.message);
-        //         }
-        //         else {
-
-        //r  }
     }
-    handleClick=()=>{
-        alert('submit clicked')
+
+    machineSubmit = async () => {
+        const { otp, otpfromProps, mobilefromProps, role } = this.state;    
+ 
+        const params={
+         mobilenumber:mobilefromProps,
+         otp:otp
+     }
+     console.log(params)
+     axios.post(`${apiRoot.url}/VerifyOTPforMachine`,params)
+     .then(response => response.data)
+     .then(
+         result => {
+            console.log(result   )
+            if(result.message==="Success"){         
+            
+             AsyncStorage.setItem('userToken', result.token);
+             AsyncStorage.setItem('mobilenumber', result.data[0].mobile);
+             AsyncStorage.setItem('userName', result.data[0].machinename);
+             AsyncStorage.setItem('userRole', result.data[0].role);
+             this.props.navigation.navigate(result.data[0].role === 'user' ? 'App2' : result.data[0].role === 'machine' ? 'App' : 'Auth');
+     
+            
+            }else if(result.message==="OTP not mached"){
+             Alert.alert(
+                 "OTP is incorrect.",
+                'Please enter valid OTP.' ,
+                 [
+                   {
+                     text: "OK",
+                     //onPress: () =>   this.props.navigation.navigate('Auth'),
+                     style: "cancel",
+                   },
+                 ],
+             )
+            }
+         },
+         error => {
+             console.log(error);
+             Alert.alert(
+                 "Error",
+                'Please try again later..' ,
+                 [
+                   {
+                     text: "OK",
+                     onPress: () =>   this.props.navigation.navigate('Auth'),
+                     style: "cancel",
+                   },
+                 ],
+             )
+         }
+     );
+ 
+     }
+
+    noaction=()=>{       
        
       }
       resendOTP=()=>{
@@ -142,6 +157,48 @@ export default class OTPverify extends React.Component {
                console.log(result)
                this.setState({
                    otpfromProps:result.OTPnumber,
+                   otp:'',
+                helperText: 'OTP sent successfully.'
+            })
+               setTimeout(() => {
+                this.setState({
+                    helperText: ''
+                })
+            }, 5000);
+               
+            },
+            error => {
+                console.log(error);
+                Alert.alert(
+                    "Error",
+                   'Please try again later..' ,
+                    [
+                      {
+                        text: "OK",
+                        onPress: () =>   this.props.navigation.navigate('Auth'),
+                        style: "cancel",
+                      },
+                    ],
+                )
+            }
+        );
+
+
+
+
+        
+      }
+      ResendOTPforMachine=()=>{
+        const {mobilefromProps}=this.state;
+
+        axios.get(`${apiRoot.url}/ResendOTPforMachine/${mobilefromProps}`)
+        .then(response => response.data)
+        .then(
+            result => {
+               console.log(result)
+               this.setState({
+                   otpfromProps:result.OTPnumber,
+                   otp:'',
                 helperText: 'OTP sent successfully.'
             })
                setTimeout(() => {
@@ -173,42 +230,35 @@ export default class OTPverify extends React.Component {
         
       }
     render() {
+        const {role}=this.state
         return (
             <View style={{ flexGrow: 1 }} behavior="padding" enabled>
                 <View style={style.container}>
+                <Card.FeaturedSubtitle style={style.titleText}><Text>Verify OTP</Text></Card.FeaturedSubtitle>        
+
                 <TextInput 
                         keyboardType="number-pad"
                         onChangeText={otp => this.setState({otp})}
                         style={style.input}
-                        placeholder="Please Enter OTP"
+                        placeholder="Please Enter 6-digit OTP"
                         value={this.state.otp}
                     />
-                    {/* <TextInput
-                        secureTextEntry={true}
-                        onChangeText={password => this.setState({ password })}
-                        style={style.input}
-                        placeholder="Password"
-                        value={this.state.password}
-                    /> */}
+                    
                     {this.state.spinner &&
                         <Text style={style.spinnerTextStyle}>Processing ...</Text>
                     }
-                    {/* {!this.state.spinner &&
-                        
-                    } */}
                     <Text style={{ color: 'red' }}>{this.state.helperText}</Text>
                                 <Pressable
                                     style={style.link}
-                                    onPress={this.resendOTP}
+                                    onPress={role==='user'? this.resendOTP:role==='machine'?this.ResendOTPforMachine:this.noaction}
                                 >
                                     <Text style={style.linkColor}>Resend OTP?</Text>
                                 </Pressable>
                     <TouchableOpacity
                         style={style.loginBtn}
+                        onPress={role==='user'? this.userSubmit:role==='machine'?this.machineSubmit:this.noaction}
 
-                        title="Sign in!"
-                        onPress={this.signInHandler}
-                    ><Text style={style.loginText}>SUBMIT</Text></TouchableOpacity>
+                    ><Text style={style.loginText}>Verify OTP</Text></TouchableOpacity>
 
 
                    {/* <TouchableOpacity>   <OtpTimer  seconds= {30} minutes={0} resend={this.handleClick}   /></TouchableOpacity> */}
@@ -220,7 +270,7 @@ export default class OTPverify extends React.Component {
                         onPress={() =>
                             this.props.navigation.navigate('Auth')
                         }
-                    ><Text style={style.signupText}>BACK TO LOGIN</Text>
+                    ><Text style={style.signupText}>Back to Login</Text>
 
                     </TouchableOpacity>
                 </View>
@@ -241,7 +291,7 @@ const style = StyleSheet.create({
     },
     loginBtn: {
         width: "75%",
-        backgroundColor: "#018e8f",
+        backgroundColor: "#612B8B",
         borderRadius: 10,
         height: 40,
         alignItems: "center",
@@ -254,13 +304,13 @@ const style = StyleSheet.create({
         color: "white"
     },
     link: {
-        width: '90%',
+        width: '75%',
         alignItems: "flex-end",
 
     },
     linkColor: {
         fontSize: 14,
-        color: '#018e8f'
+        color: '#612B8B'
     },
     input: {
         backgroundColor: '#DAE1F1',
@@ -275,10 +325,13 @@ const style = StyleSheet.create({
     spinnerTextStyle: {
         textAlign: 'center'
     },
+    titleText:{
+        color:'black',fontSize:22, marginTop:-15, marginBottom:30
+    },
     loginText:{
         color:"white"
       },
       signupText:{
-        color:"#018e8f"
+        color:"#612B8B"
       }
 });

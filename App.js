@@ -1,5 +1,5 @@
-import { TabScreen } from './src/screens/TabScreen'
-import { TabScreen2 } from './src/screens/TabScreen2';
+import { MachineScreen } from './src/screens/machines/MachineScreen'
+import { UserScreen } from './src/screens/user/UserScreen';
 import  OTP from './src/screens/auth/OTPverify'
 
 import SignScreen from './src/screens/auth/SigninScreen'
@@ -10,11 +10,11 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 
 
-const AppStack = createStackNavigator({ TabScreen });
+const AppStack = createStackNavigator({ MachineScreen });
 const AuthStack = createStackNavigator({ Signin: SignScreen });
 const AuthStack2 = createStackNavigator({ Signup: Signup });
 const OTPpage = createStackNavigator({ Key: OTP });
-const AppStack2 = createStackNavigator({ TabScreen2 });
+const AppStack2 = createStackNavigator({ UserScreen });
 
 export default createAppContainer(createSwitchNavigator(
     {
