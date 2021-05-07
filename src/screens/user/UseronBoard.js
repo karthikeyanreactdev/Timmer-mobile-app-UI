@@ -53,22 +53,25 @@ fullname:'',
     };
     componentDidMount() {
 
-        this.getuserData()
-      
+        this.getuserData()   
+        this.getfreemachine()
+
+    }
+
+    getfreemachine =()=>{
         axios.get(`${apiRoot.url}/getallactivemachines`)
-            .then(response => response.data)
-            .then(
-                result => {
+        .then(response => response.data)
+        .then(
+            result => {
 
-                    this.setState({
-                        machineList: result.data
-                    })
-                },
-                error => {
-                    console.log(error);
-                }
-            );
-
+                this.setState({
+                    machineList: result.data
+                })
+            },
+            error => {
+                console.log(error);
+            }
+        )
     }
 
     getuserData=async()=>{
@@ -86,6 +89,7 @@ fullname:'',
 
               console.log(result)
               if(result.data[0].isstarted===1){
+                this.getallmachine()
                   this.setState({
                       id: result.data[0].id,
                       machineidno:result.data[0].machineid,                    
@@ -284,6 +288,7 @@ fullname:'',
         .then(response => response.data)
         .then(
             result => {
+                this.getfreemachine()
 
                 this.setState({
                     started: false  ,
@@ -349,7 +354,21 @@ fullname:'',
        
         console.log('end', params);
     };
-
+    getallmachine =()=>{
+        axios.get(`${apiRoot.url}/getallmachine`)
+           .then(response => response.data)
+           .then(
+               result => {
+    
+                  this.setState({
+                    machineList:result.data
+                  })
+               },
+               error => {
+                   console.log(error);
+               }
+           );
+    }
     getFormattedTime(time) {
         console.log(time)
     }

@@ -78,7 +78,7 @@ export default class MachineReport extends React.Component {
                         style={{ height: 30, width: 150, border: '1px solid black' }}
                         onValueChange={(itemValue, itemIndex) =>{ this.setState({ range: itemValue },()=> this.getmachineData())}}
                     >
-                        <Picker.Item label="Today" value="1" />
+                        <Picker.Item  label="Today" value="1" />
                         <Picker.Item label="Yesterday" value="-1" />
                         <Picker.Item label="This Week" value="-7" />
                         <Picker.Item label="Last Week" value="-14" />

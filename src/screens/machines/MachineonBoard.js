@@ -33,7 +33,7 @@ class MachineonBoard extends React.Component {
             otp: '',
             userList: [],
             useridno: '',
-            userid: 'b02dcd28-ac10-11eb-b6d8-00ff2a599786',
+            userid: '',
             hourlyamount: '',
             starttime: moment().format('YYYY-DD-MM HH:mm'),
             endtime: moment().format('YYYY-DD-MM HH:mm'),
@@ -48,23 +48,12 @@ username:'',
     };
     componentDidMount() {
 
-        this.getuserData()
-      
-        axios.get(`${apiRoot.url}/getallactiveusers`)
-            .then(response => response.data)
-            .then(
-                result => {
-
-                    this.setState({
-                        userList: result.data
-                    })
-                },
-                error => {
-                    console.log(error);
-                }
-            );
-
+        this.getuserData()    
+       
+this.getfreeuser()
     }
+
+
 
     getuserData=async()=>{
 
@@ -87,9 +76,10 @@ username:'',
        .then(response => response.data)
        .then(
            result => {
-
-              console.log(result)
+              //console.log(result)
               if(result.data[0].isstarted===1){
+this.getalluser()
+
                   this.setState({
                       id: result.data[0].id,
                       useridno:result.data[0].userid,
@@ -106,6 +96,37 @@ username:'',
        );
    
     }
+getalluser =()=>{
+    axios.get(`${apiRoot.url}/getalluser`)
+       .then(response => response.data)
+       .then(
+           result => {
+
+              this.setState({
+                userList:result.data
+              })
+           },
+           error => {
+               console.log(error);
+           }
+       );
+}
+getfreeuser =()=>{
+    axios.get(`${apiRoot.url}/getallactiveusers`)
+    .then(response => response.data)
+    .then(
+        result => {
+
+            this.setState({
+                userList: result.data
+            })
+        },
+        error => {
+            console.log(error);
+        }
+    );
+}
+
     setModalVisible = (visible) => {
         if (visible) {
             this.setState({ modalVisible: visible });
@@ -305,7 +326,7 @@ username:'',
         .then(response => response.data)
         .then(
             result => {
-
+                this.getfreeuser()
                 this.setState({
                     started: false ,
                     id:'',
