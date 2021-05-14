@@ -31,7 +31,7 @@ export const MachineScreen = createBottomTabNavigator({
             
             tabBarLabel: 'On Board', 
             tabBarIcon: ({ tintColor }) => (
-                <Ionicons name="ios-timer-outline" color={tintColor} size={25} />
+                <Ionicons name="ios-timer" color={tintColor} size={25} />
             )
         }
     }, 

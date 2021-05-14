@@ -11,16 +11,18 @@ import { createStackNavigator } from 'react-navigation-stack'
 
 
 const AppStack = createStackNavigator({ MachineScreen },{defaultNavigationOptions: {
-    headerStyle: {
-       display:''
-    },}});
+    // headerStyle: {
+    //    display:'none'
+    // },
+}});
 const AuthStack = createStackNavigator({ Signin:LoginToggle });
 const AuthStack2 = createStackNavigator({ Signup: Signup });
 const OTPpage = createStackNavigator({ Key: OTP });
 const AppStack2 = createStackNavigator({ UserScreen },{defaultNavigationOptions: {
-    headerStyle: {
-       display:''
-    },}});
+    // headerStyle: {
+    //    display:'none'
+    // },
+}});
 
 const finalnav = createSwitchNavigator(
     {

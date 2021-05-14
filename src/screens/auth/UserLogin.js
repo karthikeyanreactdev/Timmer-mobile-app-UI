@@ -108,7 +108,7 @@ componentDidMount(){
                 <View style={style.container}>
                 <Image
                 style={{width: '90%', height: 100,marginTop:-30, marginBottom:30, marginLeft:-20}}
-                source={require('../../../assets/logo.jpg')}
+                source={require('../../../assets/logo.png')}
        
         />
                 <Card.FeaturedSubtitle style={style.titleText}><Text>Login to your account</Text></Card.FeaturedSubtitle>        

@@ -2,7 +2,14 @@ import React from 'react'
 import AsyncStorage from '@react-native-community/async-storage'
 import { Ionicons, SimpleLineIcons } from '@expo/vector-icons'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
-
+import {
+  SafeAreaView,
+  StyleSheet, Button,
+  Text, Alert, Picker,
+  View, TextInput,
+  Modal, Pressable,
+  TouchableHighlight, Linking, Platform 
+} from 'react-native';
 import UserTimer from './UserTimer';
 import UserReport from './UserReport';
 
@@ -25,7 +32,7 @@ export const UserScreen = createBottomTabNavigator({
             
             tabBarLabel: 'Timer', 
             tabBarIcon: ({ tintColor }) => (
-                <Ionicons name="ios-timer-outline" color={tintColor} size={25} />
+                <Ionicons name="ios-timer" color={tintColor} size={25} />
             )
         }
     }, 
@@ -49,7 +56,7 @@ export const UserScreen = createBottomTabNavigator({
                       },
                       style: "cancel",
                     },
-                    {text: 'No',style: "cancel",}
+                    {text: 'No',style: "cancel"}
                   ],
               )
             
@@ -58,7 +65,7 @@ export const UserScreen = createBottomTabNavigator({
     }
 }, {
     tabBarOptions: {
-        activeTintColor: '#0071BD', 
+        activeTintColor: '#612B8B', 
         inactiveTintColor: 'grey', 
         showIcon: true
     }
