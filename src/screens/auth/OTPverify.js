@@ -106,7 +106,7 @@ export default class OTPverify extends React.Component {
             if(result.message==="Success"){         
             
              AsyncStorage.setItem('userToken', result.token);
-             AsyncStorage.setItem('mobilenumber', result.data[0].mobile);
+             AsyncStorage.setItem('mobilenumber', result.data[0].mobile1);
              AsyncStorage.setItem('userName', result.data[0].machinename);
              AsyncStorage.setItem('userRole', result.data[0].role);
              this.props.navigation.navigate(result.data[0].role === 'user' ? 'App2' : result.data[0].role === 'machine' ? 'App' : 'Auth');

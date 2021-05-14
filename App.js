@@ -2,7 +2,7 @@ import { MachineScreen } from './src/screens/machines/MachineScreen'
 import { UserScreen } from './src/screens/user/UserScreen';
 import  OTP from './src/screens/auth/OTPverify'
 
-import SignScreen from './src/screens/auth/SigninScreen'
+import {LoginToggle} from './src/screens/auth/LoginToggle'
 import Signup from './src/screens/auth/Signup'
 import AuthLoadingScreen from './src/screens/AuthLoadingScreen'
 
@@ -10,13 +10,19 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 
 
-const AppStack = createStackNavigator({ MachineScreen });
-const AuthStack = createStackNavigator({ Signin: SignScreen });
+const AppStack = createStackNavigator({ M:MachineScreen },{defaultNavigationOptions: {
+    headerStyle: {
+       display:'none'
+    },}});
+const AuthStack = createStackNavigator({ Signin:LoginToggle });
 const AuthStack2 = createStackNavigator({ Signup: Signup });
 const OTPpage = createStackNavigator({ Key: OTP });
-const AppStack2 = createStackNavigator({ UserScreen });
+const AppStack2 = createStackNavigator({ U:UserScreen },{defaultNavigationOptions: {
+    headerStyle: {
+       display:'none'
+    },}});
 
-export default createAppContainer(createSwitchNavigator(
+const finalnav = createSwitchNavigator(
     {
         Starter: AuthLoadingScreen, 
         App: AppStack, 
@@ -27,6 +33,7 @@ export default createAppContainer(createSwitchNavigator(
 
     }, 
     {
-        initialRouteName: 'Starter'
+        initialRouteName: 'Starter' 
     }
-));
+);
+export default createAppContainer(finalnav)

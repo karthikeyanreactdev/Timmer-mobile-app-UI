@@ -85,6 +85,7 @@ export default class UserReport extends React.Component {
                     {this.state.reportData.map((item, i) => (
                         <ListItem key={item.id} bottomDivider onPress={() => { this.setModalVisible(!modalVisible); this.setState({ ReportDetails: item }) }}>
                             <ListItem.Content>                            
+                                <Card.FeaturedSubtitle style={{color:'black'}}><Text>Name : </Text> {item.name}</Card.FeaturedSubtitle>                                
                                 <Card.FeaturedSubtitle style={{color:'black'}}><Text>Machine Name : </Text> {item.machinename}</Card.FeaturedSubtitle>                                
                                 <Card.FeaturedSubtitle style={{color:'black'}}><Text>Total Amount : </Text> {item.totalamount}</Card.FeaturedSubtitle>
                                 <Card.FeaturedSubtitle style={{color:'black'}}><Text>Paid Status : </Text> {item.paidstatus}</Card.FeaturedSubtitle>
@@ -113,9 +114,11 @@ export default class UserReport extends React.Component {
                                 <Card >
                                 <Card.Title>Summary Report</Card.Title>
                                 <Card.Divider/>
+                                <Card.FeaturedSubtitle style={{color:'black'}}><Text>Name : </Text> {ReportDetails.name}</Card.FeaturedSubtitle>
+                                <Card.FeaturedSubtitle style={{color:'black'}}><Text>Mobile : </Text> {ReportDetails.mobile}</Card.FeaturedSubtitle>
                                 <Card.FeaturedSubtitle style={{color:'black'}}><Text>Machine Name : </Text> {ReportDetails.machinename}</Card.FeaturedSubtitle>
-                                <Card.FeaturedSubtitle style={{color:'black'}}><Text>User Name : </Text> {ReportDetails.firstname } {ReportDetails.lastname}</Card.FeaturedSubtitle>
-                                <Card.FeaturedSubtitle style={{color:'black'}}><Text>Hourly Amount : </Text> {ReportDetails.baseamount}</Card.FeaturedSubtitle>
+                                {/* <Card.FeaturedSubtitle style={{color:'black'}}><Text>User Name : </Text> {ReportDetails.firstname } {ReportDetails.lastname}</Card.FeaturedSubtitle> */}
+                                <Card.FeaturedSubtitle style={{color:'black'}}><Text>Cost/Hour : </Text> {ReportDetails.baseamount}</Card.FeaturedSubtitle>
                                 <Card.FeaturedSubtitle style={{color:'black'}}><Text>Total Minutes : </Text> {ReportDetails.minutes}</Card.FeaturedSubtitle>
                                 <Card.FeaturedSubtitle style={{color:'black'}}><Text>Total Amount : </Text> {ReportDetails.totalamount}</Card.FeaturedSubtitle>
                                 <Card.FeaturedSubtitle style={{color:'black'}}><Text>Paid Status : </Text> {ReportDetails.paidstatus}</Card.FeaturedSubtitle>

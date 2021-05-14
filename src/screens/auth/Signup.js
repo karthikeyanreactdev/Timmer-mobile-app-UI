@@ -44,18 +44,10 @@ export default class SigninScreen extends React.Component {
             .then(response => response.data)
             .then(
                 result => {
+console.log(result)
 
-                    Alert.alert(
-                        "Account Created Successfully..",
-                       'Login Using Mobile Number' ,
-                        [
-                          {
-                            text: "OK",
-                            onPress: () =>   this.props.navigation.navigate('Auth'),
-                            style: "cancel",
-                          },
-                        ],
-                    )
+this.props.navigation.navigate('Key', { otp:result.OTPnumber , mobile:mobileNumber,role:'user'});
+                   // this.verifyOtp
                 },
                 error => {
                    // console.log(error);
@@ -76,7 +68,23 @@ export default class SigninScreen extends React.Component {
         
     }
    
+verifyOtp=()=>{
 
+    Alert.alert(
+        "Account Created Successfully..",
+       'Login Using Mobile Number' ,
+        [
+          {
+            text: "OK",
+            onPress: () =>   this.props.navigation.navigate('Auth'),
+            style: "cancel",
+          },
+        ],
+    )
+
+
+
+}
     render() {
         const {firstName, lastName, mobileNumber}=this.state;
         return (
@@ -102,8 +110,19 @@ export default class SigninScreen extends React.Component {
                     />
                     <TextInput 
                         keyboardType="number-pad"
-                        onChangeText={mobileNumber =>{this.setState({mobileNumber}); console.log(mobileNumber.length)}}
+                        textContentType= "telephoneNumber"
+
+                        // onChangeText={mobileNumber =>{this.setState({mobileNumber}); console.log(mobileNumber.length)}}
                         style={style.input}
+                        onChangeText={(mobileNumber) => {
+                            let num = mobileNumber.replace(".", '');
+                              if(isNaN(num)){
+                                  // Its not a number
+                              }else{                                    
+                                 this.setState({ mobileNumber:num })
+                                }  
+                              }
+                            }
                         placeholder="Mobile Number"
                         value={this.state.mobileNumber}
                     />
