@@ -2,7 +2,7 @@ import React from 'react';
 //import Dimensions from 'Dimensions';
 import axios from 'axios'
 import {
-    KeyboardAvoidingView, View, Button, Alert, Text, StyleSheet, TextInput, TouchableOpacity
+    KeyboardAvoidingView, View, Button, Alert, Text, StyleSheet, TextInput, TouchableOpacity,Image
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 import { ListItem, Avatar,Card, Icon } from 'react-native-elements'
@@ -97,11 +97,20 @@ componentDidMount(){
 
     }
 
+
+
+
+
     render() {
         return (
             <View style={{ flexGrow: 1 }} behavior="padding" enabled>
 
                 <View style={style.container}>
+                <Image
+                style={{width: '90%', height: 100,marginTop:-30, marginBottom:30, marginLeft:-20}}
+                source={require('../../../assets/logo.jpg')}
+       
+        />
                 <Card.FeaturedSubtitle style={style.titleText}><Text>Login to your account</Text></Card.FeaturedSubtitle>        
 
                 <TextInput 

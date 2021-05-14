@@ -21,8 +21,7 @@ export const LoginToggle = createBottomTabNavigator({
     }, 
     Machine: {
         screen:MachineLogin , 
-        navigationOptions: {
-            
+        navigationOptions: {            
             tabBarLabel: 'Machine', 
             tabBarIcon: ({ tintColor }) => (
                 <Ionicons name="ios-settings" color={tintColor} size={25} />

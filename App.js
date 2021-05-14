@@ -10,16 +10,16 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 
 
-const AppStack = createStackNavigator({ M:MachineScreen },{defaultNavigationOptions: {
+const AppStack = createStackNavigator({ MachineScreen },{defaultNavigationOptions: {
     headerStyle: {
-       display:'none'
+       display:''
     },}});
 const AuthStack = createStackNavigator({ Signin:LoginToggle });
 const AuthStack2 = createStackNavigator({ Signup: Signup });
 const OTPpage = createStackNavigator({ Key: OTP });
-const AppStack2 = createStackNavigator({ U:UserScreen },{defaultNavigationOptions: {
+const AppStack2 = createStackNavigator({ UserScreen },{defaultNavigationOptions: {
     headerStyle: {
-       display:'none'
+       display:''
     },}});
 
 const finalnav = createSwitchNavigator(
