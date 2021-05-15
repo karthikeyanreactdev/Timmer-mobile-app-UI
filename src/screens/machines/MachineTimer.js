@@ -78,6 +78,7 @@ this.getfreeuser()
        .then( 
            result => {
               //console.log(result)
+              console.log(',es',result)
               if(result.data[0].isstarted===1){
 this.getalluser()
 
@@ -85,6 +86,8 @@ this.getalluser()
                       id: result.data[0].id,
                       useridno:result.data[0].userid,
                       hourlyamount:result.data[0].baseamount,
+                      name:result.data[0].name,
+                      useridno:result.data[0].mobile,
                       started:true,
                       ispaused:result.data[0].ispaused===1?true:false
                 

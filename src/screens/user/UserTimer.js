@@ -69,8 +69,9 @@ fullname:'',
 
     }
 
-    getfreemachine =()=>{
-        axios.get(`${apiRoot.url}/getallactivemachines`)
+    getfreemachine =async ()=>{
+        const uid= await AsyncStorage.getItem('uniqueid')
+        axios.get(`${apiRoot.url}/getAllActiveMachinesbaseduser/${uid}`)
         .then(response => response.data)
         .then(
             result => {
@@ -88,23 +89,27 @@ fullname:'',
     getuserData=async()=>{
         const number= await AsyncStorage.getItem('mobilenumber')
         const name=   await AsyncStorage.getItem('userName')
+        const uid= await AsyncStorage.getItem('uniqueid')
    
         this.setState({
            mobile:number,
            fullname:name
        })
-       axios.get(`${apiRoot.url}/getActiveUser/${number}`)
+       console.log(`/getuserBilldatabyunique/${uid}`)
+     await  axios.get(`${apiRoot.url}/getuserBilldatabyunique/${uid}`)
        .then(response => response.data)
        .then(
            result => {
 
-              console.log(result)
+              console.log('res',result)
               if(result.data[0].isstarted===1){
                 this.getallmachine()
                   this.setState({
                       id: result.data[0].id,
                       machineidno:result.data[0].machineid,                    
                       hourlyamount:result.data[0].baseamount,
+                      name:result.data[0].name,
+                      mobilenumber:result.data[0].mobile,
                       started:true,
                       ispaused:result.data[0].ispaused===1?true:false
                 
@@ -368,8 +373,10 @@ fullname:'',
        
         console.log('end', params);
     };
-    getallmachine =()=>{
-        axios.get(`${apiRoot.url}/getallmachine`)
+    getallmachine =async()=>{
+        const uid= await AsyncStorage.getItem('uniqueid')
+
+        axios.get(`${apiRoot.url}/getAllbusyeMachinesbaseduser/${uid}`)
            .then(response => response.data)
            .then(
                result => {
@@ -387,14 +394,14 @@ fullname:'',
         console.log(time)
     }
     dialCall = () => {
-        const {machineidno}=this.state;
+        const {mobilenumber}=this.state;
         let phoneNumber = '';
     
         if (Platform.OS === 'android') {
-          phoneNumber = `tel:${machineidno}`;
+          phoneNumber = `tel:${mobilenumber}`;
         }
         else {
-          phoneNumber = `telprompt:${machineidno}`;
+          phoneNumber = `telprompt:${mobilenumber}`;
         }
     
         Linking.openURL(phoneNumber);
@@ -402,7 +409,7 @@ fullname:'',
       
       
     render() {
-        const { isTimerStart, isStopwatchStart, timerDuration, resetTimer, resetStopwatc,ispaused, modalVisible, machineList, started, machineidno, hourlyamount } = this.state;
+        const { isTimerStart, isStopwatchStart, timerDuration, resetTimer, resetStopwatc,ispaused, modalVisible, machineList, started, machineidno, hourlyamount,mobilenumber } = this.state;
         return (
             
             <SafeAreaView style={styles.container} behavior="padding" enabled setStatusBarHeight={0}>
@@ -533,7 +540,7 @@ fullname:'',
                         <View style={{ flexDirection: "row",width:'100%' },styles.link}>
                                 {
 
-                                    machineidno !== '' ?
+mobilenumber !== '' ?
 
                                         <Pressable
                                             style={styles.Btncall}
@@ -542,7 +549,7 @@ fullname:'',
                                             onPress={this.dialCall}>
 
                                             <Text style={styles.buttonText}>
-                                                {/* {!isStopwatchStart ? 'START' : 'PAUSE'} */} CALL {machineidno}
+                                                {/* {!isStopwatchStart ? 'START' : 'PAUSE'} */} CALL {mobilenumber}
                                             </Text>
                                         </Pressable> : null
                                 } 
